@@ -33,7 +33,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mt-32" />
+      <div className="mt-12 sm:mt-32" />
 
       <PreviousGames />
     </PageContainer>

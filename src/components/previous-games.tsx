@@ -35,7 +35,7 @@ export function PreviousGames() {
   }
 
   return (
-    <div className="mt-12">
+    <div className="pb-24">
       <Table>
         <TableHead>
           <TableRow>
