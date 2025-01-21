@@ -48,7 +48,16 @@ export function PreviousGames() {
         </TableHead>
         <TableBody>
           {previousGames.map((game) => (
-            <TableRow key={game.id}>
+            <TableRow
+              key={game.id}
+              onClick={() => {
+                setActiveGame(game);
+                const url = game.items.every((item) => item.found)
+                  ? "/results"
+                  : "/hunt";
+                router.push(url);
+              }}
+            >
               <TableCell>
                 {game.location[0].toUpperCase() + game.location.slice(1)}
               </TableCell>
