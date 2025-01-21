@@ -68,9 +68,7 @@ export default function Page() {
       <BackButton />
 
       <div className="flex flex-col items-center gap-4">
-        <Heading>Items</Heading>
-
-        <div className="w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
           {items.map((item) => (
             <div
               key={item.id}
