@@ -1,11 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import Confetti from "react-confetti";
-import { useScreen } from "usehooks-ts";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CameraIcon } from "@heroicons/react/20/solid";
 
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
@@ -13,28 +9,17 @@ import { usePersistantStore } from "@/lib/store";
 import { Heading } from "@/components/ui/heading";
 import { SpeakButton } from "@/components/speak-button";
 import { BackButton } from "@/components/ui/back-button";
-import { CameraDialog } from "@/components/camera-dialog";
 import { NewGameModal } from "@/components/new-game-modal";
 import { PageContainer } from "@/components/ui/page-container";
-import { Dialog, DialogActions, DialogBody } from "@/components/ui/dialog";
 
 export default function Page() {
-  const screen = useScreen();
-  const router = useRouter();
-
   const activeGame = usePersistantStore((state) => state.activeGame);
-  const addItemPhoto = usePersistantStore((state) => state.addItemPhoto);
-  const markItemFound = usePersistantStore((state) => state.markItemFound);
-  const deleteItemPhoto = usePersistantStore((state) => state.deleteItemPhoto);
   const updatePreviousGame = usePersistantStore(
     (state) => state.updatePreviousGame
   );
 
   const items = activeGame?.items || [];
   const [isOpen, setIsOpen] = useState(false);
-  const [cameraDialogOpen, setCameraDialogOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-
   useEffect(() => {
     if (activeGame && items.every((item) => item.found)) {
       updatePreviousGame(activeGame);
@@ -55,13 +40,6 @@ export default function Page() {
       </PageContainer>
     );
   }
-
-  const handlePhotoCapture = (photo: string) => {
-    if (selectedItemId) {
-      addItemPhoto(selectedItemId, photo);
-      markItemFound(selectedItemId);
-    }
-  };
 
   return (
     <PageContainer>
@@ -86,23 +64,8 @@ export default function Page() {
                   src={item.photo}
                   alt={item.name}
                   className="size-20 mx-auto"
-                  deletePhoto={() => {
-                    deleteItemPhoto(item.id);
-                    markItemFound(item.id);
-                  }}
                 />
-              ) : (
-                <Button
-                  plain
-                  className="mx-auto"
-                  onClick={() => {
-                    setSelectedItemId(item.id);
-                    setCameraDialogOpen(true);
-                  }}
-                >
-                  <CameraIcon className="!size-14" />
-                </Button>
-              )}
+              ) : null}
               <span className="flex items-center gap-2">
                 {item.name}
                 <SpeakButton text={item.name} />
@@ -111,37 +74,6 @@ export default function Page() {
           ))}
         </div>
       </div>
-
-      {items.every((item) => item.found) && (
-        <>
-          <Confetti width={screen.width} height={screen.height} />
-          <Dialog
-            open={true}
-            onClose={() => {}}
-            size="2xl"
-            className="z-[10000]"
-          >
-            <DialogBody>
-              <div className="flex flex-col items-center gap-6 p-8">
-                <Heading>Congratulations!!</Heading>
-              </div>
-            </DialogBody>
-            <DialogActions>
-              <Button color="emerald" onClick={() => setIsOpen(true)}>
-                New Game
-              </Button>
-              <Button onClick={() => router.push("/")}>Home</Button>
-            </DialogActions>
-          </Dialog>
-        </>
-      )}
-
-      <NewGameModal isOpen={isOpen} setIsOpen={setIsOpen} />
-      <CameraDialog
-        isOpen={cameraDialogOpen}
-        onClose={() => setCameraDialogOpen(false)}
-        onCapture={handlePhotoCapture}
-      />
     </PageContainer>
   );
 }

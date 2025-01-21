@@ -34,8 +34,6 @@ export function PreviousGames() {
     return null;
   }
 
-  console.log(previousGames);
-
   return (
     <div className="mt-12">
       <Table>
@@ -83,10 +81,15 @@ export function PreviousGames() {
                       <DropdownItem
                         onClick={() => {
                           setActiveGame(game);
-                          router.push("/hunt");
+                          const url = game.items.every((item) => item.found)
+                            ? "/results"
+                            : "/hunt";
+                          router.push(url);
                         }}
                       >
-                        Resume
+                        {game.items.every((item) => item.found)
+                          ? "View Results"
+                          : "Continue Game"}
                       </DropdownItem>
                       <DropdownItem onClick={() => removePreviousGame(game)}>
                         Delete
