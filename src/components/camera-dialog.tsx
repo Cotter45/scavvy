@@ -85,6 +85,7 @@ export function CameraDialog({
         <video
           ref={videoRef}
           autoPlay
+          playsInline
           className="w-full h-auto object-cover"
         ></video>
         <div className="absolute bottom-6 flex items-center justify-center w-full">
