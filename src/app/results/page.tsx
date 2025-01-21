@@ -3,6 +3,7 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
+import { Text } from "@/components/ui/text";
 import { Image } from "@/components/ui/image";
 import { Button } from "@/components/ui/button";
 import { usePersistantStore } from "@/lib/store";
@@ -64,8 +65,8 @@ export default function Page() {
                   className="size-20 mx-auto"
                 />
               ) : null}
-              <span className="flex items-center gap-2">
-                {item.name}
+              <span className="flex flex-col items-center gap-2 text-center">
+                <Text className="text-center">{item.name}</Text>
                 <SpeakButton text={item.name} />
               </span>
             </div>
