@@ -34,6 +34,8 @@ export function PreviousGames() {
     return null;
   }
 
+  console.log(previousGames);
+
   return (
     <div className="pb-24">
       <Table>
@@ -83,12 +85,17 @@ export function PreviousGames() {
               <TableCell>
                 <div className="-mx-3 -my-1.5 sm:-mx-2.5">
                   <Dropdown>
-                    <DropdownButton plain aria-label="More options">
+                    <DropdownButton
+                      plain
+                      aria-label="More options"
+                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                    >
                       <EllipsisHorizontalIcon />
                     </DropdownButton>
                     <DropdownMenu anchor="bottom end">
                       <DropdownItem
-                        onClick={() => {
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
                           setActiveGame(game);
                           const url = game.items.every((item) => item.found)
                             ? "/results"
@@ -100,7 +107,12 @@ export function PreviousGames() {
                           ? "View Results"
                           : "Continue Game"}
                       </DropdownItem>
-                      <DropdownItem onClick={() => removePreviousGame(game)}>
+                      <DropdownItem
+                        onClick={(e: React.MouseEvent) => {
+                          e.stopPropagation();
+                          removePreviousGame(game);
+                        }}
+                      >
                         Delete
                       </DropdownItem>
                     </DropdownMenu>

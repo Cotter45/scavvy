@@ -39,6 +39,13 @@ export function NewGameModal({
       return false;
     }
 
+    // Check localStorage for permission status
+    const storedPermission = localStorage.getItem("cameraPermission");
+    if (storedPermission === "granted") {
+      console.log("Camera permission already granted");
+      return true;
+    }
+
     try {
       const result = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: "environment" }, // Use rear camera if available
@@ -48,6 +55,10 @@ export function NewGameModal({
 
       // Stop the camera stream immediately after testing permissions
       result.getTracks().forEach((track) => track.stop());
+
+      // Store the permission status in localStorage
+      localStorage.setItem("cameraPermission", "granted");
+
       return true;
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -87,7 +98,7 @@ export function NewGameModal({
 
     setActiveGame({
       id: uuid(),
-      location: "outside",
+      location,
       difficulty,
       date: new Date().toISOString(),
       items: items.map((item) => ({
